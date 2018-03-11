@@ -5,20 +5,27 @@ public class Acceso
     private int dia;
     private int hora;
     private int minutos;
+    private String ip;
+    private String url;
+    private int code;
     
    public Acceso(String fecha)
     {
         String[] arrayLogs = fecha.split(" ");
 
-       ano = Integer.parseInt(arrayLogs[0]);
-       mes = Integer.parseInt(arrayLogs[1]);
-       dia = Integer.parseInt(arrayLogs[2]);
-       hora = Integer.parseInt(arrayLogs[3]);
-       minutos = Integer.parseInt(arrayLogs[4]);
+       ip = arrayLogs[0];
+       ano = Integer.parseInt(arrayLogs[1].substring(1, arrayLogs[1].length()));
+       mes = Integer.parseInt(arrayLogs[2]);
+       dia = Integer.parseInt(arrayLogs[3]);
+       hora = Integer.parseInt(arrayLogs[4]);
+       minutos = Integer.parseInt(arrayLogs[5].substring(0, arrayLogs[5].length() -1));
+       url = arrayLogs[6];
+       code = Integer.parseInt(arrayLogs[7]);
     }
+    
    /**
     * Devuelve año
-    * @return año
+    * @return año int
     */ 
    public int getAno() 
     {
@@ -27,7 +34,7 @@ public class Acceso
     
     /**
     * Devuelve mes
-    * @return mes
+    * @return mes int
     */ 
    public int getMes()
     {
@@ -36,7 +43,7 @@ public class Acceso
     
    /**
     * Devuelve dia
-    * @return dia
+    * @return dia int
     */ 
    public int getDia()
     {
@@ -45,7 +52,7 @@ public class Acceso
    
    /**
     * Devuelve hora
-    * @return hora
+    * @return hora int
     */  
    public int getHora()
     {
@@ -54,10 +61,37 @@ public class Acceso
    
    /**
     * Devuelve Minutos
-    * @return Minutos
+    * @return Minutos int
     */ 
    public int getMinutos()
     {
         return minutos;
+    }
+    
+    /**
+     * Devuelve la ip
+     * @return la ip cadena
+     */
+    public String getIp()
+   {
+        return ip;
+   }
+
+    /**
+     * Devuelve la url
+     * @return la url cadena
+     */
+    public String getUrl()
+   {
+        return url;
+    }
+
+    /**
+     * Devuelve el codigo
+     * @return el codigo int
+     */
+   public int getCode()
+    {
+        return code;
     }
 }
