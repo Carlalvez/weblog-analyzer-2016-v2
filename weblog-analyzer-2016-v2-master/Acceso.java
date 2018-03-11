@@ -11,7 +11,7 @@ public class Acceso
     
    public Acceso(String fecha)
     {
-        String[] arrayLogs = fecha.split(" ");
+       String[] arrayLogs = fecha.split(" ");
 
        ip = arrayLogs[0];
        ano = Integer.parseInt(arrayLogs[1].substring(1, arrayLogs[1].length()));

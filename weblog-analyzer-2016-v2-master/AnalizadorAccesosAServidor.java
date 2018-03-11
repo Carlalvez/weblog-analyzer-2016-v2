@@ -5,15 +5,13 @@ import java.util.HashMap;
 
 public class AnalizadorAccesosAServidor
 {   
-   private ArrayList<Acceso> accesos;
-    
-    
+    private ArrayList<Acceso> accesos;
+
     public AnalizadorAccesosAServidor() 
     {
         accesos = new ArrayList<>();
     }
-    
-    
+
     public void analizarArchivoDeLog(String archivo)
     {
         accesos.clear();
@@ -31,20 +29,19 @@ public class AnalizadorAccesosAServidor
             System.out.println("Ocurrio algun error al leer el archivo.");
         }
     }
-    
-    
+
     public int obtenerHoraMasAccesos() 
     {
         int valorADevolver = -1;
-        
+
         if (!accesos.isEmpty()) {
             int[] accesosPorHora = new int[24];
-    
+
             for (Acceso accesoActual : accesos) {
                 int horaAccesoActual = accesoActual.getHora();
                 accesosPorHora[horaAccesoActual] = accesosPorHora[horaAccesoActual] + 1;
             }
-            
+
             int numeroDeAccesosMasAlto = accesosPorHora[0];
             int horaDeAccesosMasAlto = 0;
             for (int i = 0; i < accesosPorHora.length; i++) {
@@ -53,24 +50,42 @@ public class AnalizadorAccesosAServidor
                     horaDeAccesosMasAlto = i;
                 }
             }
-            
+
             valorADevolver = horaDeAccesosMasAlto;                      
         }
-        
+
         return valorADevolver;
     }
 
-    
-    
     public String paginaWebMasSolicitada() 
     {
-        return "";
+        String paginaWebMasAccesos = null;
+        HashMap<String, Integer> urlsYAccesos = new HashMap<>();
+        int numeroAccesosUrl = 0;
+        if(accesos.size() > 0){
+            for(Acceso urlActual : accesos){
+                String urlAcceso = urlActual.getUrl();
+                
+                                if (urlsYAccesos.get(urlAcceso) == null){
+                    urlsYAccesos.put(urlAcceso, 1);
+                } else {
+                    urlsYAccesos.replace(urlAcceso, urlsYAccesos.get(urlAcceso) + 1);                    
+                }
+
+                if(urlsYAccesos.get(urlAcceso) > numeroAccesosUrl){
+                    paginaWebMasAccesos = urlAcceso;
+                    numeroAccesosUrl = urlsYAccesos.get(urlAcceso);
+                }
+            }
+            
+        } else {
+            System.out.println("Error Inesperado");
+        }
+        return paginaWebMasAccesos;
     }
-    
+
     public String clienteConMasAccesosExitosos()
     {
         return "";
     }
-
-
 }
