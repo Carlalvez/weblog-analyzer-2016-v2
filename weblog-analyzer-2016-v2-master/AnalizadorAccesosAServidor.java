@@ -60,21 +60,21 @@ public class AnalizadorAccesosAServidor
     public String paginaWebMasSolicitada() 
     {
         String paginaWebMasAccesos = null;
-        HashMap<String, Integer> urlsYAccesos = new HashMap<>();
-        int numeroAccesosUrl = 0;
+        HashMap<String, Integer> urlAccesos = new HashMap<>();
+        int AccesosUrl = 0;
         if(accesos.size() > 0){
             for(Acceso urlActual : accesos){
                 String urlAcceso = urlActual.getUrl();
                 
-                                if (urlsYAccesos.get(urlAcceso) == null){
-                    urlsYAccesos.put(urlAcceso, 1);
+                                if (urlAccesos.get(urlAcceso) == null){
+                    urlAccesos.put(urlAcceso, 1);
                 } else {
-                    urlsYAccesos.replace(urlAcceso, urlsYAccesos.get(urlAcceso) + 1);                    
+                    urlAccesos.replace(urlAcceso, urlAccesos.get(urlAcceso) + 1);                    
                 }
 
-                if(urlsYAccesos.get(urlAcceso) > numeroAccesosUrl){
+                if(urlAccesos.get(urlAcceso) > AccesosUrl){
                     paginaWebMasAccesos = urlAcceso;
-                    numeroAccesosUrl = urlsYAccesos.get(urlAcceso);
+                    AccesosUrl = urlAccesos.get(urlAcceso);
                 }
             }
             
@@ -86,6 +86,37 @@ public class AnalizadorAccesosAServidor
 
     public String clienteConMasAccesosExitosos()
     {
-        return "";
+        String ipMasAccesosExitosos = null;
+        ArrayList<Acceso> ipsBuenas = new ArrayList<>();
+        HashMap<String, Integer> AccesosIp = new HashMap<>();
+        int RepetidaIp = 0;
+        int ipMayor = 0;
+       for(Acceso acceso : accesos){
+            if(acceso.getCode() < 400){
+               ipsBuenas.add(acceso);
+            }
+        }
+       if(ipsBuenas.size() > 0){
+            for(Acceso ipActual : ipsBuenas){
+                String ipAcceso = ipActual.getIp();
+                if(AccesosIp.get(ipAcceso) == null){
+                    AccesosIp.put(ipAcceso, 1);
+               }
+                else{
+                    AccesosIp.replace(ipAcceso, AccesosIp.get(ipAcceso) + 1);
+                }
+                int Octeto = Integer.parseInt(ipAcceso.split(".")[3]);
+                int Conexiones = AccesosIp.get(ipAcceso);
+                if(Conexiones > RepetidaIp || (Conexiones == RepetidaIp && Octeto > ipMayor)){
+                    RepetidaIp = Conexiones;
+                    ipMayor = Octeto;
+                   ipMasAccesosExitosos = ipAcceso;
+                }
+            }
+            
+        } else {
+            System.out.println("Ocurrio algun error al leer el archivo, no hay datos que procesar.");
+        }
+       return ipMasAccesosExitosos;
     }
 }
